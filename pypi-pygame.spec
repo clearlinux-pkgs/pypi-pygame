@@ -4,12 +4,14 @@
 #
 Name     : pypi-pygame
 Version  : 2.1.2
-Release  : 1
+Release  : 2
 URL      : https://files.pythonhosted.org/packages/9a/50/67767e5586a45e7e7b02e6f0e07853f8fcb81b54c66db6278f1a1344491f/pygame-2.1.2.tar.gz
 Source0  : https://files.pythonhosted.org/packages/9a/50/67767e5586a45e7e7b02e6f0e07853f8fcb81b54c66db6278f1a1344491f/pygame-2.1.2.tar.gz
 Summary  : Python Game Development
 Group    : Development/Tools
-License  : Apache-2.0 BSD-3-Clause LGPL-2.1 Libpng MIT Zlib
+License  : Apache-2.0 BSD-3-Clause FTL HPND IJG LGPL-2.1 Libpng Zlib
+Requires: pypi-pygame-filemap = %{version}-%{release}
+Requires: pypi-pygame-lib = %{version}-%{release}
 Requires: pypi-pygame-license = %{version}-%{release}
 Requires: pypi-pygame-python = %{version}-%{release}
 Requires: pypi-pygame-python3 = %{version}-%{release}
@@ -34,11 +36,30 @@ BuildRequires : python3-dev
 %package dev
 Summary: dev components for the pypi-pygame package.
 Group: Development
+Requires: pypi-pygame-lib = %{version}-%{release}
 Provides: pypi-pygame-devel = %{version}-%{release}
 Requires: pypi-pygame = %{version}-%{release}
 
 %description dev
 dev components for the pypi-pygame package.
+
+
+%package filemap
+Summary: filemap components for the pypi-pygame package.
+Group: Default
+
+%description filemap
+filemap components for the pypi-pygame package.
+
+
+%package lib
+Summary: lib components for the pypi-pygame package.
+Group: Libraries
+Requires: pypi-pygame-license = %{version}-%{release}
+Requires: pypi-pygame-filemap = %{version}-%{release}
+
+%description lib
+lib components for the pypi-pygame package.
 
 
 %package license
@@ -61,6 +82,7 @@ python components for the pypi-pygame package.
 %package python3
 Summary: python3 components for the pypi-pygame package.
 Group: Default
+Requires: pypi-pygame-filemap = %{version}-%{release}
 Requires: python3-core
 Provides: pypi(pygame)
 
@@ -71,13 +93,16 @@ python3 components for the pypi-pygame package.
 %prep
 %setup -q -n pygame-2.1.2
 cd %{_builddir}/pygame-2.1.2
+pushd ..
+cp -a pygame-2.1.2 buildavx2
+popd
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1648665531
+export SOURCE_DATE_EPOCH=1656384649
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -89,25 +114,49 @@ export CXXFLAGS="$CXXFLAGS -O3 -ffat-lto-objects -flto=auto "
 export MAKEFLAGS=%{?_smp_mflags}
 python3 setup.py build
 
+pushd ../buildavx2/
+export CFLAGS="$CFLAGS -m64 -march=x86-64-v3 -Wl,-z,x86-64-v3 "
+export CXXFLAGS="$CXXFLAGS -m64 -march=x86-64-v3 -Wl,-z,x86-64-v3 "
+export FFLAGS="$FFLAGS -m64 -march=x86-64-v3 -Wl,-z,x86-64-v3 "
+export FCFLAGS="$FCFLAGS -m64 -march=x86-64-v3 "
+export LDFLAGS="$LDFLAGS -m64 -march=x86-64-v3 "
+python3 setup.py build
+
+popd
 %install
 export MAKEFLAGS=%{?_smp_mflags}
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/pypi-pygame
 cp %{_builddir}/pygame-2.1.2/docs/licenses/LICENSE.FLAC.txt %{buildroot}/usr/share/package-licenses/pypi-pygame/500bbacec5d91f0bbdf53a86846bb3a3e5026283
 cp %{_builddir}/pygame-2.1.2/docs/licenses/LICENSE.fluidsynth.txt %{buildroot}/usr/share/package-licenses/pypi-pygame/731a8eff333b8f7053ab2220511b524c87a75923
+cp %{_builddir}/pygame-2.1.2/docs/licenses/LICENSE.freetype.txt %{buildroot}/usr/share/package-licenses/pypi-pygame/1b299099e16ad96ebf53e67391685d9d0a51b368
+cp %{_builddir}/pygame-2.1.2/docs/licenses/LICENSE.jpeg.txt %{buildroot}/usr/share/package-licenses/pypi-pygame/4136a0b0a031b9fd8eb7fe1b804e2a5dfea244f8
+cp %{_builddir}/pygame-2.1.2/docs/licenses/LICENSE.mpg123.txt %{buildroot}/usr/share/package-licenses/pypi-pygame/49a448135eea9423f83ed5a187b4af9629fcf259
+cp %{_builddir}/pygame-2.1.2/docs/licenses/LICENSE.numpy.txt %{buildroot}/usr/share/package-licenses/pypi-pygame/a5c2366a79c54fc80166e827d070677445e98fb3
 cp %{_builddir}/pygame-2.1.2/docs/licenses/LICENSE.ogg-vorbis.txt %{buildroot}/usr/share/package-licenses/pypi-pygame/45177cdb4b0a4675541af8784ef0f11a574b646d
+cp %{_builddir}/pygame-2.1.2/docs/licenses/LICENSE.opus.txt %{buildroot}/usr/share/package-licenses/pypi-pygame/58babeb2cff60082cfab816c65a2db16536e61e3
 cp %{_builddir}/pygame-2.1.2/docs/licenses/LICENSE.opusfile.txt %{buildroot}/usr/share/package-licenses/pypi-pygame/97fc36e24fee3b70a149a12588b0d6a14a30f49d
 cp %{_builddir}/pygame-2.1.2/docs/licenses/LICENSE.png.txt %{buildroot}/usr/share/package-licenses/pypi-pygame/ddad81444c937f22e749ab9518058682953b1cdb
 cp %{_builddir}/pygame-2.1.2/docs/licenses/LICENSE.portmidi.txt %{buildroot}/usr/share/package-licenses/pypi-pygame/47583eae99b8be974577bd0b35438f8b7b12bb92
 cp %{_builddir}/pygame-2.1.2/docs/licenses/LICENSE.sdl2.txt %{buildroot}/usr/share/package-licenses/pypi-pygame/5d118dd9f68514e2e8c0cee82a51e5672fa61a05
 cp %{_builddir}/pygame-2.1.2/docs/licenses/LICENSE.sdl2_image.txt %{buildroot}/usr/share/package-licenses/pypi-pygame/e46696ddcdee46a0a69564af93818f7fb86486f1
 cp %{_builddir}/pygame-2.1.2/docs/licenses/LICENSE.sdl2_mixer.txt %{buildroot}/usr/share/package-licenses/pypi-pygame/adb8eef305226659243625d44cdf52e3c4fe55d7
-cp %{_builddir}/pygame-2.1.2/docs/licenses/LICENSE.sse2neon-h.txt %{buildroot}/usr/share/package-licenses/pypi-pygame/3a77c57187d1a25b6a049983735528f737fbafec
+cp %{_builddir}/pygame-2.1.2/docs/licenses/LICENSE.sdl_gfx.txt %{buildroot}/usr/share/package-licenses/pypi-pygame/5018d8de54192aa20d63f52624e4414d5f2c5c05
+cp %{_builddir}/pygame-2.1.2/docs/licenses/LICENSE.tiff.txt %{buildroot}/usr/share/package-licenses/pypi-pygame/750cb144bad0eeb8301b7e753d88db30a4d97c80
 cp %{_builddir}/pygame-2.1.2/docs/licenses/LICENSE.webp.txt %{buildroot}/usr/share/package-licenses/pypi-pygame/00a7d2da8ecfab54b7859887e65ff57c71774f84
 python3 -tt setup.py build  install --root=%{buildroot}
 echo ----[ mark ]----
 cat %{buildroot}/usr/lib/python3*/site-packages/*/requires.txt || :
 echo ----[ mark ]----
+pushd ../buildavx2/
+export CFLAGS="$CFLAGS -m64 -march=x86-64-v3 -Wl,-z,x86-64-v3 "
+export CXXFLAGS="$CXXFLAGS -m64 -march=x86-64-v3 -Wl,-z,x86-64-v3 "
+export FFLAGS="$FFLAGS -m64 -march=x86-64-v3 -Wl,-z,x86-64-v3 "
+export FCFLAGS="$FCFLAGS -m64 -march=x86-64-v3 "
+export LDFLAGS="$LDFLAGS -m64 -march=x86-64-v3 "
+python3 -tt setup.py build install --root=%{buildroot}-v3
+popd
+/usr/bin/elf-move.py avx2 %{buildroot}-v3 %{buildroot} %{buildroot}/usr/share/clear/filemap/filemap-%{name}
 
 %files
 %defattr(-,root,root,-)
@@ -144,16 +193,30 @@ echo ----[ mark ]----
 /usr/include/python3.10/pygame/scrap.h
 /usr/include/python3.10/pygame/surface.h
 
+%files filemap
+%defattr(-,root,root,-)
+/usr/share/clear/filemap/filemap-pypi-pygame
+
+%files lib
+%defattr(-,root,root,-)
+/usr/share/clear/optimized-elf/other*
+
 %files license
 %defattr(0644,root,root,0755)
 /usr/share/package-licenses/pypi-pygame/00a7d2da8ecfab54b7859887e65ff57c71774f84
-/usr/share/package-licenses/pypi-pygame/3a77c57187d1a25b6a049983735528f737fbafec
+/usr/share/package-licenses/pypi-pygame/1b299099e16ad96ebf53e67391685d9d0a51b368
+/usr/share/package-licenses/pypi-pygame/4136a0b0a031b9fd8eb7fe1b804e2a5dfea244f8
 /usr/share/package-licenses/pypi-pygame/45177cdb4b0a4675541af8784ef0f11a574b646d
 /usr/share/package-licenses/pypi-pygame/47583eae99b8be974577bd0b35438f8b7b12bb92
+/usr/share/package-licenses/pypi-pygame/49a448135eea9423f83ed5a187b4af9629fcf259
 /usr/share/package-licenses/pypi-pygame/500bbacec5d91f0bbdf53a86846bb3a3e5026283
+/usr/share/package-licenses/pypi-pygame/5018d8de54192aa20d63f52624e4414d5f2c5c05
+/usr/share/package-licenses/pypi-pygame/58babeb2cff60082cfab816c65a2db16536e61e3
 /usr/share/package-licenses/pypi-pygame/5d118dd9f68514e2e8c0cee82a51e5672fa61a05
 /usr/share/package-licenses/pypi-pygame/731a8eff333b8f7053ab2220511b524c87a75923
+/usr/share/package-licenses/pypi-pygame/750cb144bad0eeb8301b7e753d88db30a4d97c80
 /usr/share/package-licenses/pypi-pygame/97fc36e24fee3b70a149a12588b0d6a14a30f49d
+/usr/share/package-licenses/pypi-pygame/a5c2366a79c54fc80166e827d070677445e98fb3
 /usr/share/package-licenses/pypi-pygame/adb8eef305226659243625d44cdf52e3c4fe55d7
 /usr/share/package-licenses/pypi-pygame/ddad81444c937f22e749ab9518058682953b1cdb
 /usr/share/package-licenses/pypi-pygame/e46696ddcdee46a0a69564af93818f7fb86486f1
