@@ -4,7 +4,7 @@
 #
 Name     : pypi-pygame
 Version  : 2.1.2
-Release  : 2
+Release  : 3
 URL      : https://files.pythonhosted.org/packages/9a/50/67767e5586a45e7e7b02e6f0e07853f8fcb81b54c66db6278f1a1344491f/pygame-2.1.2.tar.gz
 Source0  : https://files.pythonhosted.org/packages/9a/50/67767e5586a45e7e7b02e6f0e07853f8fcb81b54c66db6278f1a1344491f/pygame-2.1.2.tar.gz
 Summary  : Python Game Development
@@ -102,7 +102,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1656384649
+export SOURCE_DATE_EPOCH=1656398112
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
