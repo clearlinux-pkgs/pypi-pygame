@@ -1,0 +1,25 @@
+From 185ddc8770035487878a531f77bfafc8bf8312ad Mon Sep 17 00:00:00 2001
+From: William Douglas <william.douglas@intel.com>
+Date: Thu, 27 Oct 2022 20:26:43 -0700
+Subject: [PATCH] Bump pygame patch
+
+---
+ src_c/include/_pygame.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src_c/include/_pygame.h b/src_c/include/_pygame.h
+index 4e4482f..a9f4269 100644
+--- a/src_c/include/_pygame.h
++++ b/src_c/include/_pygame.h
+@@ -57,7 +57,7 @@
+ /* version macros (defined since version 1.9.5) */
+ #define PG_MAJOR_VERSION 2
+ #define PG_MINOR_VERSION 1
+-#define PG_PATCH_VERSION 3
++#define PG_PATCH_VERSION 4
+ #define PG_VERSIONNUM(MAJOR, MINOR, PATCH) \
+     (1000 * (MAJOR) + 100 * (MINOR) + (PATCH))
+ #define PG_VERSION_ATLEAST(MAJOR, MINOR, PATCH)                             \
+-- 
+2.37.3
+

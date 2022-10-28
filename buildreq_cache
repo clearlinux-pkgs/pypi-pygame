@@ -1,5 +1,2 @@
-2.1.2
-SDL2-dev
-pkgconfig(freetype2)
-pkgconfig(x11)
+27add48834be044d82ff2f1c86c9fc2852e99fbc
 python3-dev
