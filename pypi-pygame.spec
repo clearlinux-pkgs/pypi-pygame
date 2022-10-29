@@ -4,7 +4,7 @@
 #
 Name     : pypi-pygame
 Version  : 27add48834be044d82ff2f1c86c9fc2852e99fbc
-Release  : 11
+Release  : 12
 URL      : https://github.com/pygame/pygame/archive/27add48834be044d82ff2f1c86c9fc2852e99fbc.tar.gz
 Source0  : https://github.com/pygame/pygame/archive/27add48834be044d82ff2f1c86c9fc2852e99fbc.tar.gz
 Summary  : Python Game Development
