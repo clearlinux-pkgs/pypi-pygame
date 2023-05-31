@@ -5,7 +5,7 @@
 #
 Name     : pypi-pygame
 Version  : 27add48834be044d82ff2f1c86c9fc2852e99fbc
-Release  : 13
+Release  : 14
 URL      : https://github.com/pygame/pygame/archive/27add48834be044d82ff2f1c86c9fc2852e99fbc.tar.gz
 Source0  : https://github.com/pygame/pygame/archive/27add48834be044d82ff2f1c86c9fc2852e99fbc.tar.gz
 Summary  : Python Game Development
@@ -83,7 +83,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1683046226
+export SOURCE_DATE_EPOCH=1685550737
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
